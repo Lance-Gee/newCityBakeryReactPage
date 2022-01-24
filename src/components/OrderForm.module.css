@@ -1,0 +1,10 @@
+.orderFormDiv {
+  width: 100%;
+  margin: auto;
+  opacity: 1 !important;
+  z-index: 1;
+}
+
+.hide {
+  display: none;
+}

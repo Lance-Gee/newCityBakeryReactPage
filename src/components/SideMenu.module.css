@@ -1,0 +1,37 @@
+@import url("https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Dela+Gothic+One&display=swap");
+
+.contactInfo {
+  margin-top: 50px;
+  margin-left: 80px;
+  color: white;
+}
+
+.socialContact {
+  color: white;
+}
+
+.logo {
+  width: 200px;
+  height: 200px;
+}
+
+.menuDiv {
+  margin-top: 100px;
+  text-align: center;
+}
+
+.menuButtons {
+  font-family: "Abril Fatface", cursive;
+  color: white;
+  font-size: 25px;
+  text-shadow: 2px 2px #3a3a3a;
+  padding-bottom: 50px;
+}
+
+.orderButton {
+  margin-top: 50px;
+  text-align: center;
+  font-family: "Abril Fatface", cursive;
+  color: white;
+  font-size: 25px;
+}
