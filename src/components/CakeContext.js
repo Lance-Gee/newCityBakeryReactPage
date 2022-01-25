@@ -12,6 +12,8 @@ export const CakeProvider = (props) => {
   const [postalCode, setPostalCode] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
+  const [checkOption, setCheckOption] = useState("sheet");
+  const [cakeLayer, setCakeLayer] = useState(1);
 
   const [validName, setValidName] = useState(false);
   const [validAddress, setValidAddress] = useState(false);
@@ -34,6 +36,8 @@ export const CakeProvider = (props) => {
         postalCode: [postalCode, setPostalCode],
         phone: [phone, setPhone],
         email: [email, setEmail],
+        checkOption: [checkOption, setCheckOption],
+        cakeLayer: [cakeLayer, setCakeLayer],
         validName: [validName, setValidName],
         validAddress: [validAddress, setValidAddress],
         validPostal: [validPostal, setValidPostal],

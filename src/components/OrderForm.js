@@ -1,4 +1,3 @@
-import "bootstrap/dist/css/bootstrap.min.css";
 import { Col, Container, Row } from "react-bootstrap";
 import classes from "./OrderForm.module.css";
 import { useState, useContext } from "react";
@@ -9,12 +8,23 @@ import { CakeContext } from "./CakeContext";
 
 // Create Validation JS file for just validation and use useContext to store data
 function OrderForm() {
-  const { validClientForm, validSheetForm } = useContext(CakeContext);
+  const {
+    validClientForm,
+    validSheetForm,
+    length,
+    width,
+    radius,
+    checkOption,
+    cakeLayer,
+  } = useContext(CakeContext);
 
   const [validClientFormValue, setValidClientFormValue] = validClientForm;
   const [validSheetFormValue, setValidSheetFormValue] = validSheetForm;
-
-  const [checkOption, setCheckOption] = useState("sheet");
+  const [lengthValue, setLengthValue] = length;
+  const [widthValue, setWidthValue] = width;
+  const [radiusValue, setRadiusValue] = radius;
+  const [checkOptionValue, setCheckOptionValue] = checkOption;
+  const [cakeLayerValue, setCakeLayerValue] = cakeLayer;
 
   const [cheese, setCheese] = useState(0);
   const [almond, setAlmond] = useState(0);
@@ -29,12 +39,15 @@ function OrderForm() {
   }
 
   const validateForm = () => {
-    console.log("yes you made it to the purchase button!");
+    console.log("Length: " + lengthValue);
+    console.log("Width: " + widthValue);
+    console.log("Radius: " + radiusValue);
+    console.log("Cheese: " + cheese);
+    console.log("Almond: " + almond);
+    console.log("Fruit: " + fruit);
   };
 
-  const [selectedOption, setSelectOption] = useState(
-    <SheetForm length={0} width={0} />
-  );
+  const [selectedOption, setSelectOption] = useState(<SheetForm />);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -42,7 +55,7 @@ function OrderForm() {
   }
 
   return (
-    <Container className={classes.orderFormDiv}>
+    <Container className={`mt-5 ${classes.orderFormDiv}`}>
       <ClientForm />
       <div className="mt-5">
         <form id="newBakeryForm" action="" onSubmit={handleSubmit}>
@@ -58,11 +71,14 @@ function OrderForm() {
                   name="cakeType"
                   id="round"
                   value="round"
-                  checked={checkOption === "round"}
+                  checked={checkOptionValue === "round"}
                   onChange={(e) => {
-                    setCheckOption(e.target.value);
+                    setCheckOptionValue(e.target.value);
                     setSelectOption(<RoundForm />);
                     setValidSheetFormValue(false);
+                    setRadiusValue(0);
+                    setLengthValue(0);
+                    setWidthValue(0);
                   }}
                 />
                 <label className="form-check-label" htmlFor="round">
@@ -78,11 +94,14 @@ function OrderForm() {
                   name="cakeType"
                   id="sheet"
                   value="sheet"
-                  checked={checkOption === "sheet"}
+                  checked={checkOptionValue === "sheet"}
                   onChange={(e) => {
-                    setCheckOption(e.target.value);
-                    setSelectOption(<SheetForm length={0} width={0} />);
+                    setCheckOptionValue(e.target.value);
+                    setSelectOption(<SheetForm />);
                     setValidSheetFormValue(false);
+                    setLengthValue(0);
+                    setWidthValue(0);
+                    setRadiusValue(0);
                   }}
                 />
                 <label className="form-check-label" htmlFor="sheet">
@@ -99,8 +118,11 @@ function OrderForm() {
                 className="form-select"
                 aria-label="cakeLayer"
                 name="cakeLayer"
+                onChange={(e) => {
+                  setCakeLayerValue(parseInt(e.target.value));
+                }}
               >
-                <option defaultValue={"1"}>One</option>
+                <option defaultValue={1}>One</option>
                 <option value="2">Two</option>
                 <option value="3">Three</option>
               </select>
@@ -113,10 +135,10 @@ function OrderForm() {
                 <input
                   className="form-check-input"
                   type="checkbox"
-                  value="5"
+                  value={cheese}
                   id="creamCheese"
                   name="creamCheese"
-                  onChange={(e) => setCheese(e.target.value)}
+                  onChange={(e) => (cheese === 0 ? setCheese(5) : setCheese(0))}
                 />
                 <label className="form-check-label" htmlFor="creamCheese">
                   Cream Cheese icing is an extra $5
@@ -129,7 +151,7 @@ function OrderForm() {
                   value={almond}
                   id="fruitAlmond"
                   name="fruitAlmond"
-                  onChange={(e) => setAlmond(7)}
+                  onChange={(e) => (almond === 0 ? setAlmond(7) : setAlmond(0))}
                 />
                 <label className="form-check-label" htmlFor="fruitAlmond">
                   Fruit and Almonds topping is an extra $7
@@ -139,10 +161,10 @@ function OrderForm() {
                 <input
                   className="form-check-input"
                   type="checkbox"
-                  value="4"
+                  value={fruit}
                   id="fruitJam"
                   name="fruitJam"
-                  onChange={(e) => setFruit(e.target.value)}
+                  onChange={(e) => (fruit === 0 ? setFruit(4) : setFruit(0))}
                 />
                 <label className="form-check-label" htmlFor="fruitJam">
                   Fruit jam filling between layers is an extra $4
