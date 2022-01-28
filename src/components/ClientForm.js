@@ -8,6 +8,7 @@ const ClientForm = () => {
     address,
     postalCode,
     phone,
+    phoneType,
     email,
     validName,
     validAddress,
@@ -20,6 +21,7 @@ const ClientForm = () => {
   const [addressValue, setAddressValue] = address;
   const [postalCodeValue, setPostalCodeValue] = postalCode;
   const [phoneValue, setPhoneValue] = phone;
+  const [phoneTypeValue, setPhoneTypeValue] = phoneType;
   const [emailValue, setEmailValue] = email;
   const [validNameValue, setValidNameValue] = validName;
   const [validAddressValue, setValidAddressValue] = validAddress;
@@ -27,8 +29,6 @@ const ClientForm = () => {
   const [validPhoneValue, setValidPhoneValue] = validPhone;
   const [validEmailValue, setValidEmailValue] = validEmail;
   const [validClientFormValue, setValidClientFormValue] = validClientForm;
-
-  const [checkNumber, setCheckNumber] = useState("home");
 
   useEffect(() => {
     if (
@@ -218,9 +218,9 @@ const ClientForm = () => {
               type="radio"
               name="phoneNumber"
               id="business"
-              value="business"
-              checked={checkNumber === "business"}
-              onChange={(e) => setCheckNumber(e.target.value)}
+              value="Business"
+              checked={phoneTypeValue === "Business"}
+              onChange={(e) => setPhoneTypeValue(e.target.value)}
             />
             <label className="form-check-label" htmlFor="business">
               Business
@@ -234,9 +234,9 @@ const ClientForm = () => {
               type="radio"
               name="phoneNumber"
               id="home"
-              value="home"
-              checked={checkNumber === "home"}
-              onChange={(e) => setCheckNumber(e.target.value)}
+              value="Home"
+              checked={phoneTypeValue === "Home"}
+              onChange={(e) => setPhoneTypeValue(e.target.value)}
             />
             <label className="form-check-label" htmlFor="home">
               {" "}

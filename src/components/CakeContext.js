@@ -11,9 +11,11 @@ export const CakeProvider = (props) => {
   const [address, setAddress] = useState("");
   const [postalCode, setPostalCode] = useState("");
   const [phone, setPhone] = useState("");
+  const [phoneType, setPhoneType] = useState("Home");
   const [email, setEmail] = useState("");
   const [checkOption, setCheckOption] = useState("sheet");
   const [cakeLayer, setCakeLayer] = useState(1);
+  const [cakeOptionTotal, setCakeOptionTotal] = useState(0);
 
   const [validName, setValidName] = useState(false);
   const [validAddress, setValidAddress] = useState(false);
@@ -22,8 +24,13 @@ export const CakeProvider = (props) => {
   const [validEmail, setValidEmail] = useState(false);
 
   const [validClientForm, setValidClientForm] = useState(false);
-
   const [validSheetForm, setValidSheetForm] = useState(false);
+
+  const [cheese, setCheese] = useState(0);
+  const [almond, setAlmond] = useState(0);
+  const [fruit, setFruit] = useState(0);
+
+  const [cakeTotal, setCakeTotal] = useState(0);
 
   return (
     <CakeContext.Provider
@@ -35,6 +42,7 @@ export const CakeProvider = (props) => {
         address: [address, setAddress],
         postalCode: [postalCode, setPostalCode],
         phone: [phone, setPhone],
+        phoneType: [phoneType, setPhoneType],
         email: [email, setEmail],
         checkOption: [checkOption, setCheckOption],
         cakeLayer: [cakeLayer, setCakeLayer],
@@ -45,6 +53,11 @@ export const CakeProvider = (props) => {
         validEmail: [validEmail, setValidEmail],
         validClientForm: [validClientForm, setValidClientForm],
         validSheetForm: [validSheetForm, setValidSheetForm],
+        cakeOptionTotal: [cakeOptionTotal, setCakeOptionTotal],
+        cheese: [cheese, setCheese],
+        almond: [almond, setAlmond],
+        fruit: [fruit, setFruit],
+        cakeTotal: [cakeTotal, setCakeTotal],
       }}
     >
       {props.children}

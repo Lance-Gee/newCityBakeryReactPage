@@ -5,6 +5,6 @@
   z-index: 1;
 }
 
-.hide {
-  display: none;
+.modalHeader {
+  background-color: #fdc829;
 }

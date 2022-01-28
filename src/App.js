@@ -5,7 +5,6 @@ import background from "./images/menu_background.jpg";
 import background2 from "./images/pattern_bg.png";
 import OrderForm from "./components/OrderForm";
 import { CakeProvider } from "./components/CakeContext";
-import OrderDetail from "./components/OrderDetail";
 
 function App() {
   return (
@@ -19,11 +18,8 @@ function App() {
           <SideMenu />
         </Col>
         <CakeProvider>
-          <Col md={4}>
+          <Col md={6}>
             <OrderForm />
-          </Col>
-          <Col md={3}>
-            <OrderDetail />
           </Col>
         </CakeProvider>
       </Row>
