@@ -2,8 +2,11 @@ import React from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import classes from "./SideMenu.module.css";
 import logoImage from "../images/Logo.png";
+import { useNavigate } from "react-router-dom";
 
 function SideMenu() {
+  let navigate = useNavigate();
+
   return (
     <Container className="mt-5">
       <Row className="row justify-content-center">
@@ -23,8 +26,11 @@ function SideMenu() {
             <button
               type="button"
               className={`btn btn-primary-outline ${classes.menuButtons}`}
+              onClick={() => {
+                navigate("/");
+              }}
             >
-              OUR MENU
+              ORDER FORM
             </button>
             <button
               type="button"
@@ -41,8 +47,11 @@ function SideMenu() {
             <button
               type="button"
               className={`btn btn-outline-warning ${classes.orderButton}`}
+              onClick={() => {
+                navigate("/orders");
+              }}
             >
-              ORDER
+              VIEW ALL ORDERS
             </button>
           </Row>
         </Col>
