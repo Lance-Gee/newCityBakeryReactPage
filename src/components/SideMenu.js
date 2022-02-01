@@ -1,3 +1,4 @@
+import React from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import classes from "./SideMenu.module.css";
 import logoImage from "../images/Logo.png";

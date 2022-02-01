@@ -31,6 +31,7 @@ export const CakeProvider = (props) => {
   const [fruit, setFruit] = useState(0);
 
   const [cakeTotal, setCakeTotal] = useState(0);
+  const [resetAllForm, setResetAllForm] = useState(false);
 
   return (
     <CakeContext.Provider
@@ -58,6 +59,7 @@ export const CakeProvider = (props) => {
         almond: [almond, setAlmond],
         fruit: [fruit, setFruit],
         cakeTotal: [cakeTotal, setCakeTotal],
+        resetAllForm: [resetAllForm, setResetAllForm],
       }}
     >
       {props.children}

@@ -1,11 +1,20 @@
-import { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { CakeContext } from "./CakeContext";
 
 const SheetForm = () => {
-  const { length, width, validSheetForm } = useContext(CakeContext);
+  const { length, width, validSheetForm, resetAllForm } =
+    useContext(CakeContext);
   const [lengthValue, setLenghtValue] = length;
   const [widthValue, setWidthValue] = width;
   const [validSheetFormValue, setValidSheetFormValue] = validSheetForm;
+  const [resetAllFormValue] = resetAllForm;
+
+  useEffect(() => {
+    if (resetAllFormValue) {
+      document.getElementById("length").classList.remove("is-valid");
+      document.getElementById("width").classList.remove("is-valid");
+    }
+  }, [resetAllFormValue]);
 
   let isLengthGood = false;
   let isWidthGood = false;

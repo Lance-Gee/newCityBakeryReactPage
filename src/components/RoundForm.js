@@ -1,20 +1,27 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { CakeContext } from "./CakeContext";
 
 const RoundForm = () => {
-  const { radius, validSheetForm } = useContext(CakeContext);
+  const { radius, validSheetForm, resetAllForm } = useContext(CakeContext);
   const [radiusValue, setRadiusValue] = radius;
-  const [validSheetFormValue, setValidSheeFormValue] = validSheetForm;
+  const [validSheetFormValue, setValidSheetFormValue] = validSheetForm;
+  const [resetAllFormValue] = resetAllForm;
+
+  useEffect(() => {
+    if (resetAllFormValue) {
+      document.getElementById("radius").classList.remove("is-valid");
+    }
+  }, [resetAllFormValue]);
 
   function validateRoundSize() {
     if (radiusValue >= 15 && radiusValue <= 30) {
       document.getElementById("radius").classList.add("is-valid");
       document.getElementById("radius").classList.remove("is-invalid");
-      setValidSheeFormValue(true);
+      setValidSheetFormValue(true);
     } else {
       document.getElementById("radius").classList.remove("is-valid");
       document.getElementById("radius").classList.add("is-invalid");
-      setValidSheeFormValue(false);
+      setValidSheetFormValue(false);
     }
   }
 

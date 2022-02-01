@@ -1,8 +1,8 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import { CakeContext } from "./CakeContext";
 import { Col, Row } from "react-bootstrap";
 
-const ClientForm = () => {
+function ClientForm() {
   const {
     name,
     address,
@@ -15,8 +15,10 @@ const ClientForm = () => {
     validPostal,
     validPhone,
     validEmail,
+    resetAllForm,
     validClientForm,
   } = useContext(CakeContext);
+
   const [nameValue, setNameValue] = name;
   const [addressValue, setAddressValue] = address;
   const [postalCodeValue, setPostalCodeValue] = postalCode;
@@ -29,7 +31,9 @@ const ClientForm = () => {
   const [validPhoneValue, setValidPhoneValue] = validPhone;
   const [validEmailValue, setValidEmailValue] = validEmail;
   const [validClientFormValue, setValidClientFormValue] = validClientForm;
+  const [resetAllFormValue] = resetAllForm;
 
+  // check if the form is valid
   useEffect(() => {
     if (
       validNameValue &&
@@ -52,8 +56,26 @@ const ClientForm = () => {
     validClientFormValue,
   ]);
 
+  useEffect(() => {
+    if (resetAllFormValue) {
+      document.getElementById("clientForm").reset();
+      setNameValue("");
+      setAddressValue("");
+      setPostalCodeValue("");
+      setPhoneValue("");
+      setEmailValue("");
+      setPhoneTypeValue("home");
+
+      document.getElementById("clientName").classList.remove("is-valid");
+      document.getElementById("address").classList.remove("is-valid");
+      document.getElementById("postalCode").classList.remove("is-valid");
+      document.getElementById("telephone").classList.remove("is-valid");
+      document.getElementById("email").classList.remove("is-valid");
+    }
+  }, [resetAllFormValue]);
+
   function validateName() {
-    const symbols = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+    const symbols = /[`!@#$%^&*()_+\-=[]{};':"\|,.<>\?~]/;
     const namePattern = new RegExp(symbols);
     const isName = isNaN(nameValue);
     if (isName === false || nameValue === "" || nameValue === undefined) {
@@ -130,144 +152,146 @@ const ClientForm = () => {
 
   return (
     <div>
-      <h2 className="text-center">Order Form</h2>
-      <div>
-        <label htmlFor="firstName" className="form-label mt-3">
-          Client Name
-        </label>
-        <input
-          onBlur={validateName}
-          type="text"
-          className="form-control"
-          id="clientName"
-          name="clientName"
-          value={nameValue}
-          onChange={(e) => setNameValue(e.target.value)}
-          pattern="[A-Za-z- ]+"
-          required
-          autoFocus
-        />
-        <div className="valid-feedback">Looks good!</div>
-        <div className="invalid-feedback">Please enter a valid Name</div>
-      </div>
-      <div>
-        <label htmlFor="address" className="form-label mt-3">
-          Address
-        </label>
-        <input
-          onBlur={validateAddress}
-          type="text"
-          className="form-control"
-          id="address"
-          name="address"
-          value={addressValue}
-          onChange={(e) => setAddressValue(e.target.value)}
-          pattern="^[a-zA-Z0-9- ]+$"
-          required
-        />
-        <div className="valid-feedback">Looks good!</div>
-        <div className="invalid-feedback">Please enter a valid Address</div>
-      </div>
-      <div>
-        <label htmlFor="postalCode" className="form-label mt-3">
-          Postal Code
-        </label>
-        <input
-          onBlur={validatePostalCode}
-          type="text"
-          className="form-control"
-          id="postalCode"
-          name="postalCode"
-          value={postalCodeValue}
-          onChange={(e) => setPostalCodeValue(e.target.value)}
-          placeholder="L9L9L9"
-          pattern="[a-zA-Z][0-9][a-zA-Z][0-9][a-zA-Z][0-9]"
-          required
-        />
-        <div className="valid-feedback">Looks good!</div>
-        <div className="invalid-feedback">
-          Please enter a valid Postal Code eg. T5T5T5
+      <form id="clientForm" action="">
+        <h2 className="text-center">Order Form</h2>
+        <div>
+          <label htmlFor="firstName" className="form-label mt-3">
+            Client Name
+          </label>
+          <input
+            onBlur={validateName}
+            type="text"
+            className="form-control"
+            id="clientName"
+            name="clientName"
+            value={nameValue}
+            onChange={(e) => setNameValue(e.target.value)}
+            pattern="[A-Za-z- ]+"
+            required
+            autoFocus
+          />
+          <div className="valid-feedback">Looks good!</div>
+          <div className="invalid-feedback">Please enter a valid Name</div>
         </div>
-      </div>
-      <div>
-        <label htmlFor="telephone" className="form-label mt-3">
-          Telephone
-        </label>
-        <input
-          onBlur={validatePhone}
-          type="text"
-          className="form-control"
-          id="telephone"
-          name="phone"
-          value={phoneValue}
-          onChange={(e) => setPhoneValue(e.target.value)}
-          placeholder="xxx-xxx-xxxx"
-          pattern="\d{3}[\-]\d{3}[\-]\d{4}"
-          required
-        />
-        <div className="valid-feedback">Looks good!</div>
-        <div className="invalid-feedback">
-          Please enter a valid Phone number eg. xxx-xxx-xxxx
+        <div>
+          <label htmlFor="address" className="form-label mt-3">
+            Address
+          </label>
+          <input
+            onBlur={validateAddress}
+            type="text"
+            className="form-control"
+            id="address"
+            name="address"
+            value={addressValue}
+            onChange={(e) => setAddressValue(e.target.value)}
+            pattern="^[a-zA-Z0-9- ]+$"
+            required
+          />
+          <div className="valid-feedback">Looks good!</div>
+          <div className="invalid-feedback">Please enter a valid Address</div>
         </div>
-      </div>
-      <Row className="mt-2">
-        <Col md={4}>
-          <div className="form-check">
-            <input
-              className="form-check-input"
-              type="radio"
-              name="phoneNumber"
-              id="business"
-              value="Business"
-              checked={phoneTypeValue === "Business"}
-              onChange={(e) => setPhoneTypeValue(e.target.value)}
-            />
-            <label className="form-check-label" htmlFor="business">
-              Business
-            </label>
+        <div>
+          <label htmlFor="postalCode" className="form-label mt-3">
+            Postal Code
+          </label>
+          <input
+            onBlur={validatePostalCode}
+            type="text"
+            className="form-control"
+            id="postalCode"
+            name="postalCode"
+            value={postalCodeValue}
+            onChange={(e) => setPostalCodeValue(e.target.value)}
+            placeholder="L9L9L9"
+            pattern="[a-zA-Z][0-9][a-zA-Z][0-9][a-zA-Z][0-9]"
+            required
+          />
+          <div className="valid-feedback">Looks good!</div>
+          <div className="invalid-feedback">
+            Please enter a valid Postal Code eg. T5T5T5
           </div>
-        </Col>
-        <Col md={4}>
-          <div className="form-check">
-            <input
-              className="form-check-input"
-              type="radio"
-              name="phoneNumber"
-              id="home"
-              value="Home"
-              checked={phoneTypeValue === "Home"}
-              onChange={(e) => setPhoneTypeValue(e.target.value)}
-            />
-            <label className="form-check-label" htmlFor="home">
-              {" "}
-              Home{" "}
-            </label>
-          </div>
-        </Col>
-      </Row>
-      <div>
-        <label htmlFor="email" className="form-label mt-3">
-          Email
-        </label>
-        <input
-          onBlur={validateEmail}
-          type="text"
-          className="form-control"
-          id="email"
-          name="email"
-          value={emailValue}
-          onChange={(e) => setEmailValue(e.target.value)}
-          placeholder="yourName@gmail.com"
-          pattern="^[a-zA-Z0-9_.-]+@[a-zA-Z]+[\.][a-zA-Z]{2,}$"
-          required
-        />
-        <div className="valid-feedback">Looks good!</div>
-        <div className="invalid-feedback">
-          Please enter a valid Email eg. John@example.com
         </div>
-      </div>
+        <div>
+          <label htmlFor="telephone" className="form-label mt-3">
+            Telephone
+          </label>
+          <input
+            onBlur={validatePhone}
+            type="text"
+            className="form-control"
+            id="telephone"
+            name="phone"
+            value={phoneValue}
+            onChange={(e) => setPhoneValue(e.target.value)}
+            placeholder="xxx-xxx-xxxx"
+            pattern="\d{3}[\-]\d{3}[\-]\d{4}"
+            required
+          />
+          <div className="valid-feedback">Looks good!</div>
+          <div className="invalid-feedback">
+            Please enter a valid Phone number eg. xxx-xxx-xxxx
+          </div>
+        </div>
+        <Row className="mt-2">
+          <Col md={4}>
+            <div className="form-check">
+              <input
+                className="form-check-input"
+                type="radio"
+                name="phoneNumber"
+                id="business"
+                value="Business"
+                checked={phoneTypeValue === "Business"}
+                onChange={(e) => setPhoneTypeValue(e.target.value)}
+              />
+              <label className="form-check-label" htmlFor="business">
+                Business
+              </label>
+            </div>
+          </Col>
+          <Col md={4}>
+            <div className="form-check">
+              <input
+                className="form-check-input"
+                type="radio"
+                name="phoneNumber"
+                id="home"
+                value="Home"
+                checked={phoneTypeValue === "Home"}
+                onChange={(e) => setPhoneTypeValue(e.target.value)}
+              />
+              <label className="form-check-label" htmlFor="home">
+                {" "}
+                Home{" "}
+              </label>
+            </div>
+          </Col>
+        </Row>
+        <div>
+          <label htmlFor="email" className="form-label mt-3">
+            Email
+          </label>
+          <input
+            onBlur={validateEmail}
+            type="text"
+            className="form-control"
+            id="email"
+            name="email"
+            value={emailValue}
+            onChange={(e) => setEmailValue(e.target.value)}
+            placeholder="yourName@gmail.com"
+            pattern="^[a-zA-Z0-9_.-]+@[a-zA-Z]+[\.][a-zA-Z]{2,}$"
+            required
+          />
+          <div className="valid-feedback">Looks good!</div>
+          <div className="invalid-feedback">
+            Please enter a valid Email eg. John@example.com
+          </div>
+        </div>
+      </form>
     </div>
   );
-};
+}
 
 export default ClientForm;

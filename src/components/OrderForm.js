@@ -1,10 +1,12 @@
 import { Col, Container, Row, Modal, Button, ModalBody } from "react-bootstrap";
 import classes from "./OrderForm.module.css";
-import { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import RoundForm from "./RoundForm";
 import SheetForm from "./SheetForm";
 import ClientForm from "./ClientForm";
 import { CakeContext } from "./CakeContext";
+import { addDoc, collection } from "firebase/firestore/lite";
+import { db } from "../firebase";
 
 // Create Validation JS file for just validation and use useContext to store data
 function OrderForm() {
@@ -27,9 +29,10 @@ function OrderForm() {
     phoneType,
     email,
     cakeOptionTotal,
+    resetAllForm,
   } = useContext(CakeContext);
 
-  const [validClientFormValue, setValidClientFormValue] = validClientForm;
+  const [validClientFormValue] = validClientForm;
   const [validSheetFormValue, setValidSheetFormValue] = validSheetForm;
   const [lengthValue, setLengthValue] = length;
   const [widthValue, setWidthValue] = width;
@@ -38,23 +41,27 @@ function OrderForm() {
   const [cakeLayerValue, setCakeLayerValue] = cakeLayer;
   const [cakeTotalValue, setCakeTotalValue] = cakeTotal;
 
-  const [nameValue, setNameValue] = name;
-  const [addressValue, setAddressValue] = address;
-  const [postalCodeValue, setPostalCodeValue] = postalCode;
-  const [phoneValue, setPhoneValue] = phone;
-  const [phoneTypeValue, setPhoneTypeValue] = phoneType;
-  const [emailValue, setEmailValue] = email;
+  const [nameValue] = name;
+  const [addressValue] = address;
+  const [postalCodeValue] = postalCode;
+  const [phoneValue] = phone;
+  const [phoneTypeValue] = phoneType;
+  const [emailValue] = email;
   const [cakeTotalOptionValue, setCakeTotalOptionValue] = cakeOptionTotal;
 
   const [cheeseValue, setCheeseValue] = cheese;
   const [almondValue, setAlmondValue] = almond;
   const [fruitValue, setFruitValue] = fruit;
+  const [resetAllFormValue, setResetAllFormValue] = resetAllForm;
 
   const [additionalLayer, setAdditionalLayer] = useState(0);
 
   const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
 
+  const handleClose = () => {
+    setShow(false);
+  };
+  // calculate the cake sheet that is being used and getting the total
   useEffect(() => {
     setCakeTotalValue(0);
     if (checkOptionValue === "sheet" && lengthValue > 0 && widthValue > 0) {
@@ -76,14 +83,49 @@ function OrderForm() {
       setAdditionalLayer(cakeTotalOptionValue / 2);
       setCakeTotalValue(cakeTotalOptionValue + additionalLayer * 2);
     }
-  }, [lengthValue, widthValue, radiusValue]);
+  }, [
+    setCakeTotalValue,
+    setCakeTotalOptionValue,
+    checkOptionValue,
+    lengthValue,
+    widthValue,
+    radiusValue,
+    additionalLayer,
+    cakeLayerValue,
+    cakeTotalOptionValue,
+  ]);
 
+  // setting the grand total of order
   useEffect(() => {
     setCakeTotalValue(
       cakeTotalOptionValue + cheeseValue + almondValue + fruitValue
     );
-  });
+  }, [
+    cakeTotalOptionValue,
+    cheeseValue,
+    almondValue,
+    fruitValue,
+    setCakeTotalValue,
+  ]);
 
+  // reset order form
+  useEffect(() => {
+    if (resetAllFormValue) {
+      document.getElementById("newBakeryForm").reset();
+      setCakeLayerValue(1);
+      setCakeTotalValue(0);
+      setCheeseValue(0);
+      setAlmondValue(0);
+      setFruitValue(0);
+      setLengthValue(0);
+      setWidthValue(0);
+      setRadiusValue(0);
+      setCheckOptionValue("sheet");
+      setSelectOption(<SheetForm />);
+    }
+  }, [resetAllFormValue]);
+
+  // checking to see if both components the clientForm and SheetFrom is filled out
   function bothFormsValid() {
     if (validClientFormValue && validSheetFormValue) {
       return true;
@@ -98,6 +140,28 @@ function OrderForm() {
     e.preventDefault();
     setShow(true);
   }
+
+  function resetAllForms() {
+    setResetAllFormValue(true);
+  }
+
+  // load order details to firebase database
+  // const orderCollectionRef = collection(db, "purchaseOrders");
+
+  // const createOrder = async () => {
+  //   await addDoc(orderCollectionRef, {
+  //     name: nameValue,
+  //     address: addressValue,
+  //     phone: phoneValue,
+  //     postalCode: postalCodeValue,
+  //     cakeSizePrice: cakeTotalOptionValue,
+  //     email: emailValue,
+  //     almond: almondValue,
+  //     fruit: fruitValue,
+  //     cheese: cheeseValue,
+  //     total: cakeTotalValue,
+  //   });
+  // };
 
   return (
     <div>
@@ -326,7 +390,14 @@ function OrderForm() {
           <Button variant="danger" onClick={handleClose}>
             Cancel Order
           </Button>
-          <Button variant="primary" onClick={handleClose}>
+          <Button
+            variant="primary"
+            onClick={() => {
+              // createOrder();
+              handleClose();
+              resetAllForms();
+            }}
+          >
             Confirm Purchase
           </Button>
         </Modal.Footer>
