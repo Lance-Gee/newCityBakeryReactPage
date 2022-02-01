@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { db } from "../firebase";
-import { Col } from "react-bootstrap";
+import { Col, Table } from "react-bootstrap";
 import { collection, getDocs } from "firebase/firestore/lite";
 
 function Orders() {
@@ -27,23 +27,33 @@ function Orders() {
 
   return (
     <Col md={6}>
-      {orders.map((order) => {
-        return (
-          <div>
-            <h1>Name: {order.name}</h1>
-            <h1>Address: {order.address}</h1>
-            <h1>Phone: {order.phone}</h1>
-            <h1>PostalCode: {order.postalCode}</h1>
-            <h1>Email: {order.email}</h1>
-            <h1>CakeSizePrice: {order.cakeSizePrice}</h1>
-            <h1>Cheese: {order.cheese}</h1>
-            <h1>Fruit: {order.fruit}</h1>
-            <h1>Almond: {order.almond}</h1>
-            <h1>Total: {order.total.toFixed(2)}</h1>
-            <hr />
-          </div>
-        );
-      })}
+      <h1 className="text-center">Purchase Orders</h1>
+      <Table striped bordered hover>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Address</th>
+            <th>Phone Number</th>
+            <th>Postal Code</th>
+            <th>Email</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          {orders.map((order) => {
+            return (
+              <tr>
+                <td>{order.name}</td>
+                <td>{order.address}</td>
+                <td>{order.phone}</td>
+                <td>{order.postalCode}</td>
+                <td>{order.email}</td>
+                <td>${order.total.toFixed(2)}</td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </Table>
     </Col>
   );
 }
