@@ -1,8 +1,8 @@
 import React, { useState, createContext } from "react";
 
-export const CakeContext = createContext();
+export const CakeContext = createContext(null);
 
-export const CakeProvider = (props) => {
+export const CakeProvider = ({ props }) => {
   const [length, setLength] = useState(0);
   const [width, setWidth] = useState(0);
   const [radius, setRadius] = useState(0);
